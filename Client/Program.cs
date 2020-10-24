@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Grpc.Core;
 using Grpc.Net.Client;
-using Server;
+using Payments;
 
 namespace Client
 {
@@ -10,11 +11,12 @@ namespace Client
         static async Task Main()
         {
             using var channel = GrpcChannel.ForAddress("http://localhost:5000");
+            var call = new Payer.PayerClient(channel).Pay(new PayRequest {Reference = "bla"});
 
-            Console.WriteLine(
-                (await new Greeter.GreeterClient(channel)
-                    .SayHelloAsync(new HelloRequest {Name = "Owen"}))
-                .Message);
+            await foreach (var response in call.ResponseStream.ReadAllAsync())
+            {
+                Console.WriteLine(response.Status);
+            }
         }
     }
 }

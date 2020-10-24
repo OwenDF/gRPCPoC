@@ -5,7 +5,7 @@ option csharp_namespace = "Payments";
 package payService;
 
 service Payer {
-  rpc Pay (PayRequest) returns (stream PayResponse);
+  rpc Pay (stream PayRequest) returns (stream PayResponse);
 }
 
 message PayRequest {
@@ -21,5 +21,6 @@ message PayResponse {
     MADE = 4;
     FAILED = 5;
   }
-  PayStatus status = 1;
+  string Reference = 1;
+  PayStatus status = 2;
 }

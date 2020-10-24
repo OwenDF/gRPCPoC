@@ -1,1 +1,1 @@
-# Proof of concept for a server-side streaming gRPC client / server
+# Proof of concept for a full duplex gRPC client / server

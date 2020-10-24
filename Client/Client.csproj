@@ -1,21 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
-    <Protobuf Include="..\Protos\pay.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos/pay.proto" GrpcServices="Client">
+      <SourceUrl>https://raw.githubusercontent.com/OwenDF/gRPCPoC/v1.0.0/Protos/pay.proto</SourceUrl>
+    </Protobuf>
   </ItemGroup>
-  
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.13.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.33.1-pre1" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.32.0" />
     <PackageReference Include="Grpc.Tools" Version="2.33.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
 </Project>

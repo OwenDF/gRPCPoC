@@ -7,7 +7,6 @@ using Payments;
 namespace Client
 {
     using static Task;
-    using static TimeSpan;
     
     public class Program
     {
@@ -21,9 +20,12 @@ namespace Client
 
         private static async Task MakeCalls(AsyncDuplexStreamingCall<PayRequest, PayResponse> call)
         {
-            await call.RequestStream.WriteAsync(new PayRequest {Reference = "bla1"});
-            await Delay(FromSeconds(2));
-            await call.RequestStream.WriteAsync(new PayRequest {Reference = "bla2"});
+            for (var i = 0; i < 100; i++)
+            {
+                await call.RequestStream.WriteAsync(new PayRequest {Reference = $"Payment{i}"});
+                await Delay(500);
+            }
+
             await call.RequestStream.CompleteAsync();
         }
 

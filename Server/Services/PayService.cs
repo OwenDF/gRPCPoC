@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Payments;
@@ -22,6 +23,7 @@ namespace Server.Services
             await foreach (var request in requests.ReadAllAsync())
             {
                 var guid = Guid.NewGuid();
+                // This logic means that we hide exceptions (bad).
                 var run = Run(async () =>
                 {
                     await DoResponseCycle(responseWriter, request.Reference);
@@ -33,9 +35,7 @@ namespace Server.Services
             await WhenAll(runningResponses.Values);
         }
 
-        private static async Task DoResponseCycle(
-            IServerStreamWriter<PayResponse> responseWriter,
-            string reference)
+        private static async Task DoResponseCycle(IServerStreamWriter<PayResponse> responseWriter, string reference)
         {
             await Delay(FromSeconds(1));
             await responseWriter.WriteAsync(new PayResponse {Reference = reference, Status = FirstAccept});
